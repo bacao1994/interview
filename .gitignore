@@ -1,0 +1,6 @@
+### Goland IDEA ###
+.idea
+go.sum
+logs
+public
+.env
