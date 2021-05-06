@@ -27,7 +27,7 @@ func AddTask(c *gin.Context) {
 	userID := util.TokenUserID(c)
 
 	now := time.Now()
-	createdDate := now.Format("2006-01-02")
+	createdDate := now.Format(util.DefaultTimeFormat)
 	todayRedisKey := mergeRedisKey(userID, createdDate)
 	var isReached bool
 

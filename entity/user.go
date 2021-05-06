@@ -4,7 +4,7 @@ const DefaultMaxTodo = 5
 
 type User struct {
 	ID       string `json:"id,omitempty"`
-	Password string `json:"-"`
+	Password string `json:"password,omitempty"`
 	MaxTodo  int   `json:"max_todo,omitempty"`
 	//GormCustomTime
 }

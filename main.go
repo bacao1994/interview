@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	global.FetchEnvironmentVariables()
+	global.FetchProductionEnvironmentVariables()
 
 	entity.InitializeDb()
 

@@ -40,14 +40,52 @@ type VecConfig struct {
 	DefaultMaxTodo uint
 }
 
-func FetchEnvironmentVariables() {
-	Config = NewVecConfig()
+func FetchProductionEnvironmentVariables() {
+	Config = NewProductionVecConfig()
 	Config.GetConfig()
+	Config.LoadProductionDB()
 }
 
-func NewVecConfig() *VecConfig {
+func FetchTestEnvironmentVariables() {
+	Config = NewTestVecConfig()
+	Config.GetConfig()
+	Config.LoadTestDB()
+}
+
+func (cf *VecConfig) LoadTestDB() {
+	cf.DbHost = os.Getenv("TEST_DATABASE_HOST")
+	cf.DbPort = os.Getenv("TEST_DATABASE_PORT")
+	cf.DbUsername = os.Getenv("TEST_DATABASE_USERNAME")
+	cf.DbPassword = os.Getenv("TEST_DATABASE_PASSWORD")
+	cf.DbName = os.Getenv("TEST_DATABASE_NAME")
+	cf.DbSSLMode = os.Getenv("TEST_DATABASE_SSL_MODE")
+	cf.DbTimeZone = os.Getenv("TEST_DATABASE_TIME_ZONE")
+	cf.MaxLimit, _ = strconv.Atoi(os.Getenv("TEST_DATABASE_QUERY_MAX_LIMIT"))
+}
+
+func (cf *VecConfig) LoadProductionDB() {
+	cf.DbHost = os.Getenv("DATABASE_HOST")
+	cf.DbPort = os.Getenv("DATABASE_PORT")
+	cf.DbUsername = os.Getenv("DATABASE_USERNAME")
+	cf.DbPassword = os.Getenv("DATABASE_PASSWORD")
+	cf.DbName = os.Getenv("DATABASE_NAME")
+	cf.DbSSLMode = os.Getenv("DATABASE_SSL_MODE")
+	cf.DbTimeZone = os.Getenv("DATABASE_TIME_ZONE")
+	cf.MaxLimit, _ = strconv.Atoi(os.Getenv("DATABASE_QUERY_MAX_LIMIT"))
+}
+
+func NewProductionVecConfig() *VecConfig {
 	cf := VecConfig{}
 	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file", err)
+	}
+	return &cf
+}
+
+func NewTestVecConfig() *VecConfig {
+	cf := VecConfig{}
+	err := godotenv.Load(os.ExpandEnv("../../.env"))
 	if err != nil {
 		log.Fatal("Error loading .env file", err)
 	}
@@ -68,14 +106,6 @@ func (cf *VecConfig) GetConfig() {
 	}
 
 	cf.Prefix = prefix
-	cf.DbHost = os.Getenv("DATABASE_HOST")
-	cf.DbPort = os.Getenv("DATABASE_PORT")
-	cf.DbUsername = os.Getenv("DATABASE_USERNAME")
-	cf.DbPassword = os.Getenv("DATABASE_PASSWORD")
-	cf.DbName = os.Getenv("DATABASE_NAME")
-	cf.DbSSLMode = os.Getenv("DATABASE_SSL_MODE")
-	cf.DbTimeZone = os.Getenv("DATABASE_TIME_ZONE")
-	cf.MaxLimit, _ = strconv.Atoi(os.Getenv("DATABASE_QUERY_MAX_LIMIT"))
 	cf.AESJWTKey = os.Getenv("AES_JWT_KEY")
 	cf.HMACCombinePasswordKey = os.Getenv("HMAC_COMBINE_PASSWORD_KEY")
 	cf.ApiVersion = os.Getenv("API_VERSION")

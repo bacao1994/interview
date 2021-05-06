@@ -3,6 +3,7 @@ package pkg_logrus
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
+	"manabie/interview/util"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -18,7 +19,7 @@ func InitLogrus() {
 }
 
 func GetFileName() string {
-	return fmt.Sprintf("%s-interview.log", time.Now().Format("2006-01-02"))
+	return fmt.Sprintf("%s-interview.log", time.Now().Format(util.DefaultTimeFormat))
 }
 
 func createLogrus() {
