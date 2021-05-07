@@ -3,9 +3,9 @@ package entity
 const DefaultMaxTodo = 5
 
 type User struct {
-	ID       string `json:"id,omitempty"`
+	ID       string `json:"id,omitempty" gorm:"primary_key"`
 	Password string `json:"password,omitempty"`
-	MaxTodo  int   `json:"max_todo,omitempty"`
+	MaxTodo  int    `json:"max_todo,omitempty"`
 	//GormCustomTime
 }
 

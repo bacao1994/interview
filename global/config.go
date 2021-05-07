@@ -44,12 +44,14 @@ func FetchProductionEnvironmentVariables() {
 	Config = NewProductionVecConfig()
 	Config.GetConfig()
 	Config.LoadProductionDB()
+	Config.LoadProductionRedis()
 }
 
 func FetchTestEnvironmentVariables() {
 	Config = NewTestVecConfig()
 	Config.GetConfig()
 	Config.LoadTestDB()
+	Config.LoadTestRedis()
 }
 
 func (cf *VecConfig) LoadTestDB() {
@@ -72,6 +74,16 @@ func (cf *VecConfig) LoadProductionDB() {
 	cf.DbSSLMode = os.Getenv("DATABASE_SSL_MODE")
 	cf.DbTimeZone = os.Getenv("DATABASE_TIME_ZONE")
 	cf.MaxLimit, _ = strconv.Atoi(os.Getenv("DATABASE_QUERY_MAX_LIMIT"))
+}
+
+func (cf *VecConfig) LoadTestRedis() {
+	cf.RedisConnectionHost = fmt.Sprintf("%s:%s", os.Getenv("TEST_REDIS_HOST"), os.Getenv("TEST_REDIS_PORT"))
+	cf.RedisConnectionPassword = os.Getenv("TEST_REDIS_PASSWORD")
+}
+
+func (cf *VecConfig) LoadProductionRedis() {
+	cf.RedisConnectionHost = fmt.Sprintf("%s:%s", os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
+	cf.RedisConnectionPassword = os.Getenv("REDIS_PASSWORD")
 }
 
 func NewProductionVecConfig() *VecConfig {
@@ -110,8 +122,6 @@ func (cf *VecConfig) GetConfig() {
 	cf.HMACCombinePasswordKey = os.Getenv("HMAC_COMBINE_PASSWORD_KEY")
 	cf.ApiVersion = os.Getenv("API_VERSION")
 
-	cf.JwtValidMinute , _ = strconv.ParseInt(os.Getenv("JWT_VALID_MINUTE"), 10, 64)
+	cf.JwtValidMinute, _ = strconv.ParseInt(os.Getenv("JWT_VALID_MINUTE"), 10, 64)
 
-	cf.RedisConnectionHost = fmt.Sprintf("%s:%s", os.Getenv("REDIS_HOST"), os.Getenv("REDIS_PORT"))
-	cf.RedisConnectionPassword =  os.Getenv("REDIS_PASSWORD")
 }

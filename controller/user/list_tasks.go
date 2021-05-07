@@ -15,5 +15,5 @@ func ListTasks(c *gin.Context) {
 	if err != nil {
 		task = []entity.Task{}
 	}
-	c.JSON(http.StatusOK, gin.H{"data": task})
+	c.JSON(http.StatusOK, task)
 }

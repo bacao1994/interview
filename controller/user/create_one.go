@@ -35,10 +35,12 @@ func CreateOne(c *gin.Context) {
 
 	err = user.Create()
 
+	user.Password = ""
+
 	if err != nil {
 		util.AbortUnexpected(c, util.ERR_CODE_DB_ISSUE, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"detail": "success"})
+	c.JSON(http.StatusOK, user)
 }

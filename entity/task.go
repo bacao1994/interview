@@ -1,11 +1,12 @@
 package entity
 
 type Task struct {
-	ID          string ` json:"id,omitempty"`
+	ID          string ` json:"id,omitempty" gorm:"primary_key"`
 	Content     string `json:"content,omitempty"`
 	UserID      string `json:"user_id,omitempty"`
 	CreatedDate string `json:"created_date,omitempty"`
 }
+
 // Save updates the existing or inserts a new row.
 func (t *Task) Save() error {
 	return Db().Save(t).Error

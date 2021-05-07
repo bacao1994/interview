@@ -1,20 +1,22 @@
-package entity_tests
+package controller_tests
 
 import (
 	"github.com/google/uuid"
 	"log"
 	"manabie/interview/entity"
 	"manabie/interview/global"
+	pkg_rd "manabie/interview/pkg/rd"
 	"manabie/interview/util"
 	"os"
 	"testing"
 	"time"
 )
 
-
 func TestMain(m *testing.M) {
 	global.FetchTestEnvironmentVariables()
 	entity.InitializeDb()
+
+	pkg_rd.InitializeRdV8()
 
 	//os.Exit(m.Run())
 	log.Printf("Before calling m.Run() !!!")
@@ -92,10 +94,10 @@ func refreshUserAndTaskTable() error {
 	return nil
 }
 
-func seedOneUserAndOneTask() (entity.Task, error) {
+func seedOneUserAndOneTask() (entity.User, entity.Task, error) {
 	err := refreshUserAndTaskTable()
 	if err != nil {
-		return entity.Task{}, err
+		return entity.User{}, entity.Task{}, err
 	}
 	user := entity.User{
 		ID:       "firstUser",
@@ -104,7 +106,7 @@ func seedOneUserAndOneTask() (entity.Task, error) {
 	}
 	err = user.Create()
 	if err != nil {
-		return entity.Task{}, err
+		return entity.User{}, entity.Task{}, err
 	}
 	task := entity.Task{
 		ID:          uuid.New().String(),
@@ -114,7 +116,7 @@ func seedOneUserAndOneTask() (entity.Task, error) {
 	}
 	err = task.Create()
 	if err != nil {
-		return entity.Task{}, err
+		return entity.User{}, entity.Task{}, err
 	}
-	return task, nil
+	return user, task, nil
 }

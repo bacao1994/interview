@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"manabie/interview/entity"
@@ -36,11 +37,11 @@ func AddTask(c *gin.Context) {
 
 	// First, we can reduce query to DB by check the daily limit is reached by user_id with redis
 	result, err := pkg_rd.RdConn().Get(ctx, todayRedisKey).Result()
-	if err != nil {
+	if err == redis.Nil || err == nil {
+		isReached, _ = strconv.ParseBool(result)
+	} else {
 		util.AbortUnexpected(c, util.ERR_CODE_DB_ISSUE, "can't check max to do")
 		return
-	} else {
-		isReached, _ = strconv.ParseBool(result)
 	}
 
 	if isReached {

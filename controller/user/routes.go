@@ -12,5 +12,6 @@ func RegisterRoutes(route *gin.Engine) {
 		userGroup.POST("/users/log_in", LogIn)
 		userGroup.POST("/users", CreateOne)
 		userGroup.GET("/users/tasks", jwt_service.DoAuthenticate(), ListTasks)
+		userGroup.POST("/users/tasks", jwt_service.DoAuthenticate(), AddTask)
 	}
 }

@@ -75,6 +75,14 @@ var doc = `{
 		"/v1/users/tasks": {
 			"get": {
 			  	"tags": ["User"], "summary": "List tasks", "produces": [ "application/json"], "parameters": [], "responses": {}
+			},
+			"post": {
+				"tags": ["User"], "summary": "Add a task", "produces": [ "application/json"],
+				"parameters": [{
+					"in": "body", "name": "body", "required": true,
+					"schema": { "$ref": "#/definitions/UserAddTaskForm" }
+				}],
+				"responses": {}
 			}
       	}
 	},
@@ -91,9 +99,17 @@ var doc = `{
 			"type": "object",
 			"properties": {
 				"id": { "type": "string", "example": "firstUser" },
-				"password": { "type": "string", "example": "example" }
+				"password": { "type": "string", "example": "example" },
+				"max_todo": { "type": "number", "example": 5 }
 			},
 			"xml": { "name": "UserCreateForm" }
+		},
+		"UserAddTaskForm": {
+			"type": "object",
+			"properties": {
+				"content": { "type": "string", "example": "content" }
+			},
+			"xml": { "name": "UserAddTaskForm" }
 		}
 	}
 }`

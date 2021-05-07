@@ -4,6 +4,7 @@ import (
 	"github.com/go-playground/assert/v2"
 	"log"
 	"manabie/interview/entity"
+	"manabie/interview/query"
 	"manabie/interview/util"
 	"testing"
 )
@@ -25,4 +26,24 @@ func TestSaveUser(t *testing.T) {
 	}
 	assert.Equal(t, newUser.ID, "firstUser")
 	assert.Equal(t, newUser.MaxTodo,5)
+}
+
+func TestGetUserByID(t *testing.T) {
+
+	err := refreshUserTable()
+	if err != nil {
+		log.Fatalf("Error user refreshing table %v\n", err)
+	}
+
+	user, err := seedOneUser()
+	if err != nil {
+		log.Fatalf("cannot seed users table: %v", err)
+	}
+	foundUser, err := query.UserByID(user.ID)
+	if err != nil {
+		t.Errorf("this is the error getting one user: %v\n", err)
+		return
+	}
+	assert.Equal(t, foundUser.ID, user.ID)
+	assert.Equal(t, foundUser.MaxTodo, user.MaxTodo)
 }
