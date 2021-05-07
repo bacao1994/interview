@@ -3,4 +3,4 @@
 go.sum
 logs
 public
-#.env
+.env

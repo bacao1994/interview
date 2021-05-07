@@ -9,7 +9,7 @@ services:
     volumes:
       - api:/root
     depends_on:
-      - posgres_db
+      - postgres_db
     networks:
       - manabie
 
@@ -27,7 +27,7 @@ services:
       - manabie
     restart: unless-stopped
 
-  posgres_db:
+  postgres_db:
     image: postgres:latest
     container_name: interview_db
     environment:
@@ -49,7 +49,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     depends_on:
-      - posgres_db
+      - postgres_db
     ports:
       - "5050:80"
     networks:
